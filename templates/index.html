@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Journal Companion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Lottie Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <div class="logo-container text-center mb-4">
+                    <div id="logo-animation" class="mb-3" style="width: 80px; height: 80px; margin: 0 auto;"></div>
+                    <h2><i class="bi bi-journal-text"></i> AI Journal Companion</h2>
+                    <p class="text-muted">Your personal journaling assistant</p>
+                </div>
+                <div class="prompt-section">
+                    <h4>
+                        <i class="bi bi-lightbulb"></i> Today's Prompt
+                        <button id="speak-prompt" class="btn btn-sm btn-outline-secondary ms-2">
+                            <i class="bi bi-volume-up"></i> Speak
+                        </button>
+                    </h4>
+                    <div id="ai-prompt" class="prompt-box highlight">
+                        Click to get a journal prompt
+                    </div>
+                    <button id="get-prompt" class="btn btn-primary w-100">
+                        <i class="bi bi-arrow-clockwise"></i> Get New Prompt
+                    </button>
+                </div>
+                <div class="app-info mt-4 p-3 rounded">
+                    <h5><i class="bi bi-info-circle"></i> About</h5>
+                    <p>AI Journal Companion helps you reflect on your thoughts and emotions through guided journaling.</p>
+                    <div class="features">
+                        <div class="feature-item">
+                            <i class="bi bi-chat-quote"></i> Personalized prompts
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-graph-up"></i> Emotional insights
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-mic"></i> Voice input & output
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 main-content">
+                <div class="journal-container">
+                    <div class="mood-selector mb-3">
+                        <h4><i class="bi bi-emoji-smile"></i> How are you feeling today?</h4>
+                        <div class="mood-buttons">
+                            <button class="mood-btn" data-mood="happy">
+                                <i class="bi bi-emoji-smile"></i> Happy
+                            </button>
+                            <button class="mood-btn" data-mood="sad">
+                                <i class="bi bi-emoji-frown"></i> Sad
+                            </button>
+                            <button class="mood-btn" data-mood="anxious">
+                                <i class="bi bi-emoji-dizzy"></i> Anxious
+                            </button>
+                            <button class="mood-btn" data-mood="calm">
+                                <i class="bi bi-emoji-neutral"></i> Calm
+                            </button>
+                            <button class="mood-btn" data-mood="excited">
+                                <i class="bi bi-emoji-laughing"></i> Excited
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="journal-entry">
+                        <h4><i class="bi bi-pencil-square"></i> Your Journal Entry</h4>
+                        <div class="voice-controls">
+                            <button id="start-recording" class="btn btn-outline-primary">
+                                <i class="bi bi-mic"></i> Start Recording
+                            </button>
+                            <button id="stop-recording" class="btn btn-outline-danger" disabled>
+                                <i class="bi bi-stop-circle"></i> Stop Recording
+                            </button>
+                            <span id="recording-status" class="recording-status"></span>
+                            <div id="waveform-animation" class="waveform-container" style="display: none;">
+                                <div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div>
+                                <div class="waveform-bar"></div>
+                            </div>
+                        </div>
+                        <textarea id="journal-text" class="form-control" rows="10" placeholder="Write your thoughts here..."></textarea>
+                    </div>
+
+                    <div class="action-buttons mt-3">
+                        <button id="analyze-entry" class="btn btn-success">
+                            <i class="bi bi-search"></i> Analyze Entry
+                        </button>
+                        <button id="get-insights" class="btn btn-info">
+                            <i class="bi bi-graph-up"></i> Get Emotional Insights
+                        </button>
+                    </div>
+                </div>
+
+                <div class="insights-container mt-4">
+                    <h4>
+                        <i class="bi bi-lightning-charge"></i> AI Insights
+                        <button id="speak-insights" class="btn btn-sm btn-outline-secondary ms-2">
+                            <i class="bi bi-volume-up"></i> Speak
+                        </button>
+                    </h4>
+                    <div id="ai-insights" class="insights-box">
+                        <div class="insights-placeholder">
+                            <div id="insights-animation" style="width: 60px; height: 60px; margin: 0 auto 15px;"></div>
+                            <p>Your insights will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center mt-4 mb-3">
+        <p class="text-muted">AI Journal Companion &copy; 2025 | Designed with <i class="bi bi-heart-fill text-danger"></i></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Initialize Lottie animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logo animation
+            lottie.loadAnimation({
+                container: document.getElementById('logo-animation'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: 'https://assets5.lottiefiles.com/packages/lf20_jcikwtux.json' // Journal animation
+            });
+            
+            // Insights animation
+            lottie.loadAnimation({
+                container: document.getElementById('insights-animation'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: 'https://assets3.lottiefiles.com/packages/lf20_xyadoh9h.json' // Lightbulb animation
+            });
+            
+            // Show waveform animation when recording
+            const startRecordingBtn = document.getElementById('start-recording');
+            const stopRecordingBtn = document.getElementById('stop-recording');
+            const waveformAnimation = document.getElementById('waveform-animation');
+            
+            startRecordingBtn.addEventListener('click', function() {
+                waveformAnimation.style.display = 'flex';
+            });
+            
+            stopRecordingBtn.addEventListener('click', function() {
+                waveformAnimation.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html> 

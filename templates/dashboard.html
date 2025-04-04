@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Your Journal Entries</h2>
+            <a href="{{ url_for('new_entry') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Entry
+            </a>
+        </div>
+
+        {% if entries %}
+            <div class="entries-list">
+                {% for entry in entries %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ entry.title }}</h5>
+                            <p class="card-text text-muted">
+                                <small>{{ entry.created_at.strftime('%B %d, %Y') }}</small>
+                                <span class="badge bg-{{ 'success' if entry.mood == 'Happy' else 'warning' if entry.mood == 'Neutral' else 'danger' }}">
+                                    {{ entry.mood }}
+                                </span>
+                            </p>
+                            <p class="card-text">{{ entry.content[:200] }}...</p>
+                            <a href="{{ url_for('view_entry', entry_id=entry.id) }}" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <h3>No entries yet</h3>
+                <p class="text-muted">Start your journaling journey by creating your first entry!</p>
+                <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Create First Entry</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Mood Overview</h5>
+                <div class="mood-stats">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Happy</span>
+                        <span class="badge bg-success">{{ entries|selectattr('mood', 'equalto', 'Happy')|list|length }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Neutral</span>
+                        <span class="badge bg-warning">{{ entries|selectattr('mood', 'equalto', 'Neutral')|list|length }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Sad</span>
+                        <span class="badge bg-danger">{{ entries|selectattr('mood', 'equalto', 'Sad')|list|length }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Journaling Tips</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">• Write consistently for better insights</li>
+                    <li class="mb-2">• Be honest with your feelings</li>
+                    <li class="mb-2">• Include both positive and challenging experiences</li>
+                    <li class="mb-2">• Use the mood tracker to identify patterns</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

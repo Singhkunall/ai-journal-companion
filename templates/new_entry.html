@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}New Entry{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Create New Journal Entry</h2>
+                <form method="POST" id="journalForm">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mood" class="form-label">How are you feeling today?</label>
+                        <select class="form-select" id="mood" name="mood" required>
+                            <option value="">Select your mood...</option>
+                            <option value="Happy">Happy</option>
+                            <option value="Neutral">Neutral</option>
+                            <option value="Sad">Sad</option>
+                            <option value="Anxious">Anxious</option>
+                            <option value="Excited">Excited</option>
+                            <option value="Calm">Calm</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Your Thoughts</label>
+                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                        <div class="form-text">Write freely about your thoughts, feelings, and experiences.</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save Entry</button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Writing Prompts</h5>
+                <p class="card-text">Need inspiration? Try these prompts:</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">• What made you smile today?</li>
+                    <li class="mb-2">• What's something you're looking forward to?</li>
+                    <li class="mb-2">• What's a challenge you're facing?</li>
+                    <li class="mb-2">• What are you grateful for?</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('journalForm').addEventListener('submit', function(e) {
+    const content = document.getElementById('content').value;
+    if (content.length < 50) {
+        e.preventDefault();
+        alert('Please write at least 50 characters to get meaningful AI insights.');
+    }
+});
+</script>
+{% endblock %} 
