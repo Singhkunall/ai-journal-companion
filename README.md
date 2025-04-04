@@ -30,7 +30,7 @@ An AI-powered digital journal companion focused on personalized journaling and m
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/ai-journal-companion.git
+   git clone https://github.com/singhkunall/ai-journal-companion.git
    cd ai-journal-companion
    ```
 
